@@ -1,3 +1,7 @@
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
 import requests
 
 BOARD_TOKEN = "stripe"  # swap for any company that uses Greenhouse
@@ -10,5 +14,14 @@ data = response.json()
 jobs = data["jobs"]
 print(f"Found {len(jobs)} jobs at {BOARD_TOKEN}\n")
 
-for job in jobs[:10]:
-    print(job["title"], "|", job["location"]["name"])
+# Save the data to a JSON file
+out_dir = Path("data/raw")
+out_dir.mkdir(parents=True, exist_ok=True)
+
+timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+out_file = out_dir / f"{BOARD_TOKEN}_{timestamp}.json"
+
+with open(out_file, "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=2)
+
+print(f"Saved to {out_file}")
