@@ -5,7 +5,8 @@ from pathlib import Path
 
 import requests
 
-BOARD_TOKENS = ["stripe", "airbnb", "figma", "cloudflare", "datadog"]
+with open("boards.txt") as f:
+    BOARD_TOKENS = [line.strip() for line in f if line.strip()]
 
 out_dir = Path("data/raw")
 out_dir.mkdir(parents=True, exist_ok=True)

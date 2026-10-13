@@ -48,9 +48,13 @@ with conn:
     with conn.cursor() as cur:
         cur.execute(CREATE_TABLE)
 
-        # sorted so newer snapshots are loaded last and win
+        # Pick the newest file for each company (filenames end in a sortable timestamp)
+        latest = {}
         for path in sorted(Path("data/raw").glob("*.json")):
             company = path.stem.rsplit("_", 2)[0]
+            latest[company] = path  # later files overwrite earlier ones
+
+        for company, path in latest.items():
             with open(path, encoding="utf-8") as f:
                 data = json.load(f)
 
