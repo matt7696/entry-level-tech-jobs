@@ -14,5 +14,6 @@ SELECT
     WHEN title ~* '\y(junior|entry[- ]level)\y' THEN 'junior'
     WHEN title ~* '\y(senior|staff|principal)\y' THEN 'senior+'
     ELSE 'unlabeled'
-  END AS level
+  END AS level,
+  loaded_at >= max(loaded_at) OVER (PARTITION BY company) - interval '1 hour' AS is_active
 FROM postings;
