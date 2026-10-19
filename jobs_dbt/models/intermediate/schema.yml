@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: int_postings_classified
+    description: "Postings from staging with role family, level, and active flag."
+    columns:
+      - name: posting_key
+        data_tests:
+          - unique
+          - not_null
+      - name: role_family
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['data engineering', 'data analytics', 'data science / ML', 'software / other engineering', 'other']
+      - name: level
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['internship', 'new grad / early career', 'junior', 'senior+', 'unlabeled']
