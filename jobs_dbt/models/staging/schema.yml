@@ -9,3 +9,5 @@ models:
       - name: job_id
         data_tests:
           - not_null
+      - name: description_text
+        description: "Job description with HTML removed."
