@@ -20,3 +20,9 @@ models:
           - accepted_values:
               arguments:
                 values: ['internship', 'new grad / early career', 'junior', 'senior+', 'unlabeled']
+      - name: years_bucket
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['not stated', '0-2 years', '3-4 years', '5+ years']
