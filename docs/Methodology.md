@@ -11,8 +11,11 @@ Keyword rules on the job title: data engineering, data analytics, data science /
 ## Level
 Keyword rules on the title: internship, new grad / early career, junior, senior+, or unlabeled. Word-boundary matching avoids false hits like "Internal" matching "intern".
 
-## Required experience
-Extracted from the first "N years" mention in the description, bucketed into 0-2, 3-4, 5+, or not stated.
+## Required experience (updated)
+- `required_years` is the first "N years" or "N-M years" mention in the plain-text description; for ranges it uses the lower number
+- `years_bucket` groups it into 0-2, 3-4, 5+, or not stated
+- Hand check of 20 random 0-2 postings: about 17 had a real experience requirement, but only about 4 were truly entry-level. Most were "2+ years" minimums, so this is a "low experience required" signal, not an entry-level label.
+- Known gaps: "years of university education" is matched as experience, "less than N years" is read as a requirement, and wide ranges like "2-12+" use the lower bound
 
 ## Measured quality (hand-checked samples)
 - Title-based entry-level flag: ~81% precision on 36 postings
