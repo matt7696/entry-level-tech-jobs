@@ -24,6 +24,23 @@ select
         else 'unlabeled'
     end as level,
 
-    loaded_at >= max(loaded_at) over (partition by company) - interval '1 hour' as is_active
+    loaded_at >= max(loaded_at) over (partition by company) - interval '1 hour' as is_active,
+
+    -- first "N years" or "N-M years" mention; for ranges, the lower number
+    (regexp_match(
+        description_text,
+        '(\d{1,2})\s*\+?\s*(?:(?:-|\u2013|to)\s*\d{1,2}\s*\+?)?\s*(?:years|yrs)',
+        'i'
+    ))[1]::int as required_years,
+
+    case
+        when (regexp_match(description_text,
+            '(\d{1,2})\s*\+?\s*(?:(?:-|\u2013|to)\s*\d{1,2}\s*\+?)?\s*(?:years|yrs)', 'i'))[1]::int is null then 'not stated'
+        when (regexp_match(description_text,
+            '(\d{1,2})\s*\+?\s*(?:(?:-|\u2013|to)\s*\d{1,2}\s*\+?)?\s*(?:years|yrs)', 'i'))[1]::int <= 2 then '0-2 years'
+        when (regexp_match(description_text,
+            '(\d{1,2})\s*\+?\s*(?:(?:-|\u2013|to)\s*\d{1,2}\s*\+?)?\s*(?:years|yrs)', 'i'))[1]::int <= 4 then '3-4 years'
+        else '5+ years'
+    end as years_bucket
 
 from {{ ref('stg_postings') }}
