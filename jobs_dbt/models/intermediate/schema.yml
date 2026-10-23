@@ -26,3 +26,14 @@ models:
           - accepted_values:
               arguments:
                 values: ['not stated', '0-2 years', '3-4 years', '5+ years']
+
+  - name: int_postings_deduped
+    description: "Classified postings with a primary-posting flag for one row per role (company + normalized title)."
+    columns:
+      - name: posting_key
+        data_tests:
+          - unique
+          - not_null
+      - name: is_primary_posting
+        data_tests:
+          - not_null
