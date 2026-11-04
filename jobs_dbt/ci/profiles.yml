@@ -1,0 +1,12 @@
+jobs_dbt:
+  target: ci
+  outputs:
+    ci:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: ci_user
+      password: fake_password
+      dbname: ci_db
+      schema: analytics
+      threads: 1
